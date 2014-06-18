@@ -311,7 +311,7 @@ function onEachFeature(feature, layer) {
 			layer.openPopup();
 			});
 		layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip
-		+ "<h5>Selected School API</h5><table class='table table-bordered'><tr><td> API for school:</td><td>" + feature.properties.Schoolwide + "</td></tr><tr><td>" +
+		+ "<h5>API for the School</h5><table class='table table-bordered'><tr><td> Overall:</td><td>" + feature.properties.Schoolwide + "</td></tr><tr><td>" +
 		theSelected + " :</td><td> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center'><span class='text-center "+ theDiffClass +"'>" + theDiff + "</span></h3></div>"
 		);	
 	}
