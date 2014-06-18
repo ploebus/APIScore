@@ -131,7 +131,7 @@
 				</div>
 			</div>
 		<div class="row-fluid">
-			<div class="col-md-8" id="aboutsection">
+			<div class="col-md-12" id="aboutsection">
 			<!--<a name="about"></a>-->
 				<h2><a name="abt"></a>What are API Scores?</h2>
 					<ul class="faq">
@@ -336,8 +336,8 @@ function onEachFeature(feature, layer) {
 			layer.openPopup();
 			});
 		layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip
-		+ "<h5>API for the School</h5><table class='table table-bordered'><tr><td> Overall:</td><td>" + feature.properties.Schoolwide + "</td></tr><tr><td>" +
-		theSelected + " :</td><td> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center'><span class='text-center "+ theDiffClass +"'>" + theDiff + "</span></h3></div>"
+		+ "<h5 style='margin-bottom:5px'>API for the School</h5><table class='table table-striped'><tr><td style='line-height:1'> Overall:</td><td style='line-height:1'>" + feature.properties.Schoolwide + "</td></tr><tr><td style='line-height:1'>" +
+		theSelected + " :</td><td style='line-height:1'> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center'><span class='text-center "+ theDiffClass +"'>" + theDiff + "</span></h3></div>"
 		);	
 	}
 
