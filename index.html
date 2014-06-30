@@ -31,7 +31,7 @@
 		</div>
 		<div class="col-md-8 vcenter text-center">
 			<h2>Oakland Public Schools API Scores</h2>
-			<h4 style="color:#4ab100">For School Years 2012 to 2013</h4>
+			<h4 style="color:#4ab100">2012 to 2013</h4>
 		</div>
 		<div class="col-md-2 vcenter text-right">
 			<a class="about" href="#abt">ABOUT</a>
@@ -65,7 +65,7 @@
 				  <li class="active"><a data-match= 'Schoolwide' href="#contact">ALL STUDENTS</a></li>
 				  <li><a data-match= 'Asian' href="#contact">ASIAN</a></li>
 				  <li><a data-match= 'Black' href="#contact">AFRICAN AMERICAN/BLACK</a></li>
-				  <li><a data-match= 'Hispanic' href="#contact">HISPANIC</a></li>
+				  <li><a data-match= 'Hispanic' href="#contact">HISPANIC or LATINO</a></li>
 				  <li><a data-match= 'White' href="#contact">WHITE</a></li>
 				  <li><a data-match= 'EngLearner' href="#contact">ENGLISH LEARNER</a></li>
 				  <li><a data-match= 'LowIncome' href="#contact">LOW INCOME</a></li>
@@ -109,8 +109,8 @@
 							<thead>
 							<tr id="headerRow">
 								<th>School<span  class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></th>
-								<th id="selScore"><span  style="color:#66CD00" class="glyphicon glyphicon-eject" ></span> API Score</th>
-								<th>Difference from School's Average<span  class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></span></th>
+								<th id="selScore"></span><span style="text-transform:uppercase"> API </span> Score <span  style="color:#66CD00" class="glyphicon glyphicon-eject" ></th>
+								<th>Difference from School's Average<span class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></span></th>
 							</tr>
 							</thead>
 							<tbody id="theSchools">
@@ -136,11 +136,11 @@
 				<h2><a name="abt"></a>What are API Scores?</h2>
 					<ul class="faq">
 					<li>The Academic Performance Index (API) measures the academic performance and improvement of schools.  This is based on results from Standardized Testing & Reporting (STAR) and the California High School Exit Exam (CAHSEE).</li>
-					<li>The state has set a score of 800 out a possible 1,000 as the target for all schools to meet.</li>
-					<li>However, because the tests are changing to the new Common Core State Standards, there will be no more API scores until the 2015-2016 school year- this is to allow the whole system to adapt to this new testing approach.</li>
-					<li>Up till 2012 Oakland was the most improved urban schol district for the previous eight years!</li>
-					<li>Scores in 2012/2013 were down in Oakland which was consistent with the trends statewide- the first time scores fell widely in more than a decade.</li>
-					<li>Each sub group of students is scored separately- we believe it is important to understand the way that different groups perform compared to other groups, which is why we have made it easy for you to map the scores for different ethnic and other sub groups of or school district.</li>
+					<li>The state has set a score of 800 out of a possible 1,000 as the target for all schools to meet.</li>
+					<li>However, because the tests are changing to the new Common Core State Standards, there will be no more API scores until the 2015-2016 school year. This is to allow the whole system to adapt to this new testing approach.</li>
+					<li>Up until 2012 Oakland was the most improved urban schol district for the previous eight years!</li>
+					<li>Scores in 2012/2013 went down in Oakland which was consistent with the trends statewide- the first time scores fell widely in more than a decade.</li>
+					<li>Each sub group of students is scored separately. We believe it is important to understand the way that different groups perform compared to other groups, which is why we have made it easy for you to map the scores for different ethnic and other sub groups of or school district.</li>
 					<li>This site includes both public schools and public charter schools.</li>
 					</ul>
 			</div>
@@ -282,7 +282,7 @@ function drawChart(feature){
             text: feature.properties.School
         },
         xAxis: {
-            categories: ["All Students","Asian","Black or African American","Hispanic or Latino","White"]
+            categories: ["All Students","Asian","Black/African American","Hispanic/Latino","White"]
         },
         yAxis: {
             title: {
@@ -325,7 +325,7 @@ function onEachFeature(feature, layer) {
 			
 		}
 		
-		$("#selScore").html(theSelected + "<br/> Api Score" )
+		$("#selScore").html(theSelected + "<br/> API Score" )
 		//create row in table
 		$('#theSchools').append("<tr><td id='firstRow'><a href='#'id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[theSelected] + 
 		"</td><td style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
