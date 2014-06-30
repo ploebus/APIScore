@@ -27,7 +27,7 @@
   <div class="container-fluid">
 	<div class="row-fluid vcenter">
 		<div class='col-md-2 text-center'>
-			<a href="https://www.gopublicschools.org/"><img class="text-center" src="https://www.gopublicschools.org/images/go_c4_logo.gif" style="width:168px;height:84px;padding-top:5px" alt="Go Public Schools Logo"></a>
+			<a href="https://www.gopublicschools.org/"><img class="text-center" src="images/go_leadercenter.jpg" style="width:168px;height:84px;padding-top:5px" alt="Go Public Schools Logo"></a>
 		</div>
 		<div class="col-md-8 vcenter text-center">
 			<h2>Oakland Public Schools API Scores</h2>
@@ -104,13 +104,13 @@
 					<div class="col-md-12">
 					<!--<h4 id='theDistrict'></h4>-->
 						<div id="selectedSchool">
-							
+						<h5 id="lblSelected">All Students</h5>	
 						<table id="theScores" class="tablesorter table-responsiv table-condensed">
 							<thead>
 							<tr id="headerRow">
 								<th>School<span  class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></th>
 								<th id="selScore"></span><span style="text-transform:uppercase"> API </span> Score <span  style="color:#66CD00" class="glyphicon glyphicon-eject" ></th>
-								<th>Difference from School's Average<span class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></span></th>
+								<th class="thirdColumn">Difference from School's Average<span class="glyphicon glyphicon-eject" style="color:#66CD00;float:right" ></span></span></th>
 							</tr>
 							</thead>
 							<tbody id="theSchools">
@@ -326,19 +326,33 @@ function onEachFeature(feature, layer) {
 		}
 		
 		$("#selScore").html(theSelected + "<br/> API Score" )
-		//create row in table
-		$('#theSchools').append("<tr><td id='firstRow'><a href='#'id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[theSelected] + 
-		"</td><td style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
-		theDiff +"</td></tr>");
+		
+
 		//bind to map popup
 		$("#s" + feature.properties.NCESSchool).click(function(){
 			drawChart(feature);
 			layer.openPopup();
 			});
+		
 		layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip
-		+ "<h5 style='margin-bottom:5px'>API for the School</h5><table class='table table-striped'><tr><td style='line-height:1'> Overall:</td><td style='line-height:1'>" + feature.properties.Schoolwide + "</td></tr><tr><td style='line-height:1'>" +
-		theSelected + " :</td><td style='line-height:1'> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center'><span class='text-center "+ theDiffClass +"'>" + theDiff + "</span></h3></div>"
+		+ "<h5 style='margin-bottom:5px'>API for the School</h5><table class='table table-striped'><tr><td style='line-height:1'> Overall: </td><td style='line-height:1'>" + feature.properties.Schoolwide + "</td></tr><tr class='thirdColumn'><td style='line-height:1'>" +
+		theSelected + ": </td><td style='line-height:1'> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center thirdColumn'><span class='text-center "+ theDiffClass +"  thirdColumn'>" + theDiff + "</span></h3></div>"
 		);	
+
+		//create row in table
+		//catch if schoolwide
+		
+		
+			$('#theSchools').append("<tr><td id='firstRow'><a href='#' id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[theSelected] + 
+			"</td><td class='thirdColumn' style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
+			theDiff +"</td></tr>");
+		
+		if(theSelected == 'Schoolwide'){
+			$('.thirdColumn').hide();
+		}
+		else{
+			$('.thirdColumn').show();
+		}
 	}
 
 //MAKE A MAP!
