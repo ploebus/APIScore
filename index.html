@@ -63,13 +63,13 @@
 				
 				<ul id="menu" class="nav navbar-nav navbar-inner">
 				  <li class="active"><a data-match= 'Schoolwide' href="#contact">ALL STUDENTS</a></li>
-				  <li><a data-match= 'Asian' href="#contact">ASIAN</a></li>
-				  <li><a data-match= 'Black' href="#contact">AFRICAN AMERICAN/BLACK</a></li>
-				  <li><a data-match= 'Hispanic' href="#contact">HISPANIC or LATINO</a></li>
-				  <li><a data-match= 'White' href="#contact">WHITE</a></li>
-				  <li><a data-match= 'EngLearner' href="#contact">ENGLISH LEARNER</a></li>
-				  <li><a data-match= 'LowIncome' href="#contact">LOW INCOME</a></li>
-				  <li><a data-match= 'Disability' href="#contact">DISABILITY</a></li>
+				  <li><a data-match= 'AS_API13' href="#contact">ASIAN</a></li>
+				  <li><a data-match= 'AA_API13' href="#contact">AFRICAN AMERICAN/BLACK</a></li>
+				  <li><a data-match= 'HI_API13' href="#contact">HISPANIC or LATINO</a></li>
+				  <li><a data-match= 'WH_API13' href="#contact">WHITE</a></li>
+				  <li><a data-match= 'EL_API' href="#contact">ENGLISH LEARNER</a></li>
+				  <li><a data-match= 'SD_API13' href="#contact">LOW INCOME</a></li>
+				  <li><a data-match= 'DI_API13' href="#contact">DISABILITY</a></li>
 
 				</ul>
 			</div>
@@ -170,7 +170,7 @@
 	  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 	  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-	  <script src="OUSD_API_0610.geojson"></script>
+	  <script src="OUSD_APIScores_1213.json"></script>
 	  <script src="Data.js"></script>
 	  <script type="text/javascript" src="highcharts.js"></script>
 	  <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.4"></script>
@@ -198,7 +198,7 @@ $('#sidebar').affix({
         top: 200
       }
 });	
-	var theSelected = 'Schoolwide';
+	var theSelected = 'API13';
 	//ESTABLISH DATA BUCKETS AND COLORS
 	function getColor(d) {
     return d > 900 ? '#2c7bb6' :
@@ -214,7 +214,7 @@ $('#sidebar').affix({
 	//var map = L.map('map').setView([37.7919584,-122.2287941,13], 12);
 	
 	var layer = new L.StamenTileLayer("toner");
-var map = new L.Map("map", {
+	var map = new L.Map("map", {
     center: new L.LatLng(37.7919584,-122.2287941),
     zoom: 12
 });
@@ -241,7 +241,7 @@ var geojsonMarkerOptions = {
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
-};
+};686
 function highlightFeature(e) {
 			var layer = e.target;
 
@@ -278,11 +278,8 @@ function drawChart(feature){
         chart: {
             type: 'bar'
         },
-        title: {
-            text: feature.properties.School
-        },
         xAxis: {
-            categories: ["All Students","Asian","Black/African American","Hispanic/Latino","White"]
+            categories: ["All Students","Asian","Black/African American","Hispanic/Latino","White","English Learners", "Socioeconomically Disadvantaged","Disability"]
         },
         yAxis: {
             title: {
@@ -293,10 +290,10 @@ function drawChart(feature){
         },
         series: [{
             name: feature.properties.School,
-            data: [feature.properties.Schoolwide,feature.properties.Asian,feature.properties.Black,feature.properties.Hispanic,feature.properties.White]
+            data: [feature.properties.API13,feature.properties.AS_API13,feature.properties.AA_API13,feature.properties.HI_API13,feature.properties.WH_API13,feature.properties.LI_API13,feature.properties.SD_API13,feature.properties.DI_API13]
         }, {
             name: 'District',
-            data: [721,824,644,687,896]
+            data: [721,824,644,687,896,686,687,552]
         }]
     });
 	
