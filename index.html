@@ -62,14 +62,14 @@
 			 <div class="collapse navbar-collapse" id="dropMenu">
 				
 				<ul id="menu" class="nav navbar-nav navbar-inner">
-				  <li class="active"><a data-match= 'Schoolwide' href="#contact">ALL STUDENTS</a></li>
-				  <li><a data-match= 'AS_API13' href="#contact">ASIAN</a></li>
-				  <li><a data-match= 'AA_API13' href="#contact">AFRICAN AMERICAN/BLACK</a></li>
-				  <li><a data-match= 'HI_API13' href="#contact">HISPANIC or LATINO</a></li>
-				  <li><a data-match= 'WH_API13' href="#contact">WHITE</a></li>
-				  <li><a data-match= 'EL_API' href="#contact">ENGLISH LEARNER</a></li>
-				  <li><a data-match= 'SD_API13' href="#contact">LOW INCOME</a></li>
-				  <li><a data-match= 'DI_API13' href="#contact">DISABILITY</a></li>
+				  <li class="active"><a data-match= 'ALL' href="#contact">ALL STUDENTS</a></li>
+				  <li><a data-match= 'AS' href="#contact">ASIAN</a></li>
+				  <li><a data-match= 'AA' href="#contact">AFRICAN-AMERICAN or BLACK</a></li>
+				  <li><a data-match= 'HI' href="#contact">HISPANIC or LATINO</a></li>
+				  <li><a data-match= 'WH' href="#contact">WHITE</a></li>
+				  <li><a data-match= 'EL' href="#contact">ENGLISH LEARNER</a></li>
+				  <li><a data-match= 'SD' href="#contact">LOW INCOME</a></li>
+				  <li><a data-match= 'DI' href="#contact">DISABILITY</a></li>
 
 				</ul>
 			</div>
@@ -177,6 +177,13 @@
  
 
   <script>
+	//set up some variables to match data source	
+	var theSelected = 'ALL';
+	var score2013 = theSelected + "_API13";
+	var	score2012 = theSelected + "_API12";
+	var num2013 = theSelected + "_NUM";
+	var selectedLabel = labels[theSelected];
+
 
 $("#menu li a").click(function(){
 	$("#dropMenu").collapse('hide');
@@ -198,7 +205,7 @@ $('#sidebar').affix({
         top: 200
       }
 });	
-	var theSelected = 'API13';
+	
 	//ESTABLISH DATA BUCKETS AND COLORS
 	function getColor(d) {
     return d > 900 ? '#2c7bb6' :
@@ -224,12 +231,12 @@ $('#sidebar').affix({
 	
 	//DYNAMICALLY ASSIGN A STYLE TO LAYER
 	function style(feature) {
-    console.log(theSelected);
+    //console.log(theSelected);
 	return {
-        fillColor: getColor(feature.properties[theSelected]),
+        fillColor: getColor(feature.properties[score2013]),
         weight: 2,
         opacity: 1,
-        color: getColor(feature.properties[theSelected]),
+        color: getColor(feature.properties[score2013]),
         fillOpacity: 0.9
     };
 }
@@ -266,7 +273,7 @@ function resetHighlight(e) {
 		
 function theFilter(feature,layer){
 	//console.log("yeah : " + theSelected);
-	return feature.properties[theSelected] >0;
+	return feature.properties[score2013] > 0;
 }
 //GOOGLE CHART
 function drawChart(feature){
@@ -277,6 +284,9 @@ function drawChart(feature){
 	$('#chartArea').highcharts({
         chart: {
             type: 'bar'
+        },
+        title: {
+            text: ""
         },
         xAxis: {
             categories: ["All Students","Asian","Black/African American","Hispanic/Latino","White","English Learners", "Socioeconomically Disadvantaged","Disability"]
@@ -290,7 +300,7 @@ function drawChart(feature){
         },
         series: [{
             name: feature.properties.School,
-            data: [feature.properties.API13,feature.properties.AS_API13,feature.properties.AA_API13,feature.properties.HI_API13,feature.properties.WH_API13,feature.properties.LI_API13,feature.properties.SD_API13,feature.properties.DI_API13]
+            data: [feature.properties.ALL_API13,feature.properties.AS_API13,feature.properties.AA_API13,feature.properties.HI_API13,feature.properties.WH_API13,feature.properties.LI_API13,feature.properties.SD_API13,feature.properties.DI_API13]
         }, {
             name: 'District',
             data: [721,824,644,687,896,686,687,552]
@@ -300,17 +310,25 @@ function drawChart(feature){
 
 }
 
+
 function onEachFeature(feature, layer) {
-		// make the popup
+		// draw the chart on layer click
+		score2013 = theSelected + "_API13";
+		score2012 = theSelected + "_API12";
+		num2013 = theSelected + "_NUM";
+		selectedLabel = labels[theSelected];
+		
 		layer.on('click',function(){
 			drawChart(feature);
 		});
 		
+		//CREATE  VALUES FOR GROUP
+
+			var theDiffClass = "same";
+			//console.log(score2013);
+			var theDiff = feature.properties[score2013] - feature.properties.ALL_API13;
+			//console.log (theDiff);
 		
-		
-		var theDiffClass = "same";
-		var theDiff = feature.properties[theSelected] - feature.properties.Schoolwide;
-		console.log (theDiff);
 		switch (true){
 			case theDiff > 0:
 				theDiffClass = "glyphicon glyphicon-arrow-up over";
@@ -322,8 +340,20 @@ function onEachFeature(feature, layer) {
 			
 		}
 		
-		$("#selScore").html(theSelected + "<br/> API Score" )
 		
+		$("#selScore").html(labels[theSelected] + "<br/> API Score" )
+		
+		if(theSelected == 'ALL'){
+			layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip + "<h2 style='margin-bottom:1px'>" + feature.properties[score2013] + "<span style='color:#333333;font-size:12px;font-weight:bold'>:  SCHOOL API</span></h2><span style='width:100%;text-align:center;font-size:12px'> (" + feature.properties[num2013] + " Students Tested)</span></div>" 
+				);
+			$('.thirdColumn').hide();
+		}
+		else {
+			//POPUP FOR SUBGROUP
+			layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip + "<h2 style='margin-bottom:1px;color:#808080'>" + feature.properties.ALL_API13 + "<span style='color:#333333;font-size:12px;font-weight:bold'>:  SCHOOL API</span></h2><span style='width:100%;text-align:center;font-size:12px'> (" + feature.properties.ALL_NUM + " Students Tested)</span><h2 style='margin-bottom:1px'>" + feature.properties[score2013] + "<span style='color:#333333;font-size:12px;font-weight:bold'>:  " + selectedLabel + " API</span></h2><span style='width:100%;text-align:center;font-size:12px'> (" + feature.properties[num2013] + " Students Tested)</span><h3 class='text-center thirdColumn'><span class='text-center "+ theDiffClass +"  thirdColumn'>" + theDiff + "</span></h3></div>"  
+				);	
+			$('.thirdColumn').show();
+			}
 
 		//bind to map popup
 		$("#s" + feature.properties.NCESSchool).click(function(){
@@ -331,25 +361,19 @@ function onEachFeature(feature, layer) {
 			layer.openPopup();
 			});
 		
-		layer.bindPopup("<div id='thePopup'><strong>" + feature.properties.School + "</strong><BR/>" + feature.properties.MailStreet + "<br>Oakland,CA " + feature.properties.Zip
-		+ "<h5 style='margin-bottom:5px'>API for the School</h5><table class='table table-striped'><tr><td style='line-height:1'> Overall: </td><td style='line-height:1'>" + feature.properties.Schoolwide + "</td></tr><tr class='thirdColumn'><td style='line-height:1'>" +
-		theSelected + ": </td><td style='line-height:1'> " + feature.properties[theSelected] + "</td></tr></table><h3 class='text-center thirdColumn'><span class='text-center "+ theDiffClass +"  thirdColumn'>" + theDiff + "</span></h3></div>"
-		);	
+
+		
+		
 
 		//create row in table
 		//catch if schoolwide
 		
 		
-			$('#theSchools').append("<tr><td id='firstRow'><a href='#' id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[theSelected] + 
+			$('#theSchools').append("<tr><td id='firstRow'><a href='#' id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[score2013] + 
 			"</td><td class='thirdColumn' style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
 			theDiff +"</td></tr>");
+	
 		
-		if(theSelected == 'Schoolwide'){
-			$('.thirdColumn').hide();
-		}
-		else{
-			$('.thirdColumn').show();
-		}
 	}
 
 //MAKE A MAP!
@@ -357,9 +381,9 @@ function resetMap(){
 	try {
 		
 		map.removeLayer(theSchoolLayer);
-		console.log('remove');
+		//console.log('remove');
 	}catch(e){
-	console.log('nothin');
+	//console.log('nothin');
 	}
 	
 	$("#theSchools tr").remove();
@@ -370,7 +394,7 @@ function resetMap(){
 		},
 		filter:theFilter,
 		onEachFeature:onEachFeature
-		}).addTo(map)
+		}).addTo(map);
 	$("#theScores").tablesorter();
 }
 
@@ -389,7 +413,7 @@ resetMap();
 			for (var i = 0; i < grades.length; i++) {
 			from = grades[i];
 			to = grades[i + 1];
-			console.log(getColor(from + 1));
+			//console.log(getColor(from + 1));
 			labels.push(
 			'<li style="background:' + getColor(from + 1) + '">' +
 			from + (to ? '&ndash;' + to : '+') + '</li>');
@@ -407,6 +431,10 @@ $('.nav a').click(function(a){
 	$('#theSchools tr').empty();
 	theSelected = $(this).attr('data-match');
 	//$('#summaryBox').html("District-wide Average : " + $(this).text() + ' : ' + allScores[theSelected] + '<br/>');
+	score2013 = theSelected + "_API13";
+	score2012 = theSelected + "_API12";
+	num2013 = theSelected + "_NUM";
+	selectedLabel = labels[theSelected];
 	resetMap();
 });
 
