@@ -65,7 +65,7 @@
 				  <li class="active"><a data-match= 'ALL' href="#contact">ALL STUDENTS</a></li>
 				  <li><a data-match= 'AS' href="#contact">ASIAN</a></li>
 				  <li><a data-match= 'AA' href="#contact">AFRICAN-AMERICAN or BLACK</a></li>
-				  <li><a data-match= 'HI' href="#contact">HISPANIC or LATINO</a></li>
+				  <li><a data-match= 'HI' href="#contact">LATINO</a></li>
 				  <li><a data-match= 'WH' href="#contact">WHITE</a></li>
 				  <li><a data-match= 'EL' href="#contact">ENGLISH LEARNER</a></li>
 				  <li><a data-match= 'SD' href="#contact">LOW INCOME</a></li>
@@ -142,6 +142,8 @@
 					<li>Scores in 2012/2013 went down in Oakland which was consistent with the trends statewide- the first time scores fell widely in more than a decade.</li>
 					<li>Each sub group of students is scored separately. We believe it is important to understand the way that different groups perform compared to other groups, which is why we have made it easy for you to map the scores for different ethnic and other sub groups of or school district.</li>
 					<li>This site includes both public schools and public charter schools.</li>
+					<li>"Asian" subgroup does not include Filipino(241 students) or Native Hawaiian or Pacific Islanders (312 students).</li>
+					<li>Please refer to <a href='http://www.cde.ca.gov/ta/ac/ap/glossary13f.asp#gf15'>California Department of Education </a> website for descriptions of subgroups and API testing</li>
 					</ul>
 			</div>
 		</div>
@@ -183,7 +185,7 @@
 	var	score2012 = theSelected + "_API12";
 	var num2013 = theSelected + "_NUM";
 	var selectedLabel = labels[theSelected];
-
+	var geojson;
 
 $("#menu li a").click(function(){
 	$("#dropMenu").collapse('hide');
@@ -248,28 +250,28 @@ var geojsonMarkerOptions = {
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
-};686
+};
+
 function highlightFeature(e) {
 			var layer = e.target;
-
+			//console.log(layer)
 			layer.setStyle({
-				weight: 2,
-				color: '#fff',
-				dashArray: '',
-				fillOpacity: 0.7
+				fillColor: getColor(layer.feature.properties[score2013]),
+        		weight: 4,
+        		opacity: 1,
+        		color: '#333333',
+        		fillOpacity: 0.9
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
 				layer.bringToFront();
 			}
-
-			info.update(layer.feature.properties);
 		}
 
-function resetHighlight(e) {
-			geojson.resetStyle(e.target);
-			info.update();
-		}
+function resetHighlight(e){
+	theSchoolLayer.resetStyle(e.target)
+}
+
 		
 function theFilter(feature,layer){
 	//console.log("yeah : " + theSelected);
@@ -289,7 +291,7 @@ function drawChart(feature){
             text: ""
         },
         xAxis: {
-            categories: ["All Students","Asian","Black/African American","Hispanic/Latino","White","English Learners", "Socioeconomically Disadvantaged","Disability"]
+            categories: ["All Students","Asian","Black/African American","Latino","White","English Learners", "Socioeconomically Disadvantaged","Disability"]
         },
         yAxis: {
             title: {
@@ -311,6 +313,7 @@ function drawChart(feature){
 }
 
 
+
 function onEachFeature(feature, layer) {
 		// draw the chart on layer click
 		score2013 = theSelected + "_API13";
@@ -318,9 +321,23 @@ function onEachFeature(feature, layer) {
 		num2013 = theSelected + "_NUM";
 		selectedLabel = labels[theSelected];
 		
+		
+		layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+        });
 		//add functions to map click like chart draw and table highlight
 		layer.on('click',function(){
 			drawChart(feature);
+			//SCROLL TO ROW IN TABLE
+			var w = $(window)	
+			$('#theScores tr').removeClass('activeRow')
+			var row = $('#r' + feature.properties.NCESSchool).addClass('activeRow');
+			
+			if(row.length){
+				w.scrollTop(row.offset().top - (w.height()/2));
+			}
+
 			$("#r" + feature.properties.NCESSchool).get(0).scrollIntoView();
 			$("#r" + feature.properties.NCESSchool).css("border:solid thick green");
 
@@ -445,6 +462,8 @@ $('.nav a').click(function(a){
 	selectedLabel = labels[theSelected];
 	resetMap();
 });
+
+
 
   </script>
 
