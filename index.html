@@ -318,8 +318,12 @@ function onEachFeature(feature, layer) {
 		num2013 = theSelected + "_NUM";
 		selectedLabel = labels[theSelected];
 		
+		//add functions to map click like chart draw and table highlight
 		layer.on('click',function(){
 			drawChart(feature);
+			$("#r" + feature.properties.NCESSchool).get(0).scrollIntoView();
+			$("#r" + feature.properties.NCESSchool).css("border:solid thick green");
+
 		});
 		
 		//CREATE  VALUES FOR GROUP
@@ -354,9 +358,15 @@ function onEachFeature(feature, layer) {
 				);	
 			$('.thirdColumn').show();
 			}
+		//create row in table	
+		$('#theSchools').append("<tr id='r" + feature.properties.NCESSchool + "'><td id='firstRow'><a href='#' id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[score2013] + 
+			"</td><td class='thirdColumn' style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
+			theDiff +"</td></tr>");
 
+		
 		//bind to map popup
 		$("#s" + feature.properties.NCESSchool).click(function(){
+			console.log(feature.properties.NCESSchool);
 			drawChart(feature);
 			layer.openPopup();
 			});
@@ -365,13 +375,11 @@ function onEachFeature(feature, layer) {
 		
 		
 
-		//create row in table
-		//catch if schoolwide
 		
 		
-			$('#theSchools').append("<tr><td id='firstRow'><a href='#' id='s" + feature.properties.NCESSchool + "'>" + feature.properties.School + "</a></td><td>" + feature.properties[score2013] + 
-			"</td><td class='thirdColumn' style='padding-left:10px'><span class='" + theDiffClass + "'></span>  " +
-			theDiff +"</td></tr>");
+		
+		
+			
 	
 		
 	}
