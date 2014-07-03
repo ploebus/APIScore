@@ -330,16 +330,18 @@ function onEachFeature(feature, layer) {
 		layer.on('click',function(){
 			drawChart(feature);
 			//SCROLL TO ROW IN TABLE
-			var w = $(window)	
+			//var w = $('#theScores');	
 			$('#theScores tr').removeClass('activeRow')
 			var row = $('#r' + feature.properties.NCESSchool).addClass('activeRow');
-			
-			if(row.length){
-				w.scrollTop(row.offset().top - (w.height()/2));
-			}
+			var rowpos = $('#r' + feature.properties.NCESSchool).position();
 
-			$("#r" + feature.properties.NCESSchool).get(0).scrollIntoView();
-			$("#r" + feature.properties.NCESSchool).css("border:solid thick green");
+			$('#theScores').scrollTop(rowpos.top);
+			//if(row.length){
+			//	w.scrollTop(row.offset().top - (w.height()/2));
+			//}
+
+			//$("#r" + feature.properties.NCESSchool).get(0).scrollIntoView();
+			//$("#r" + feature.properties.NCESSchool).css("border:solid thick green");
 
 		});
 		
