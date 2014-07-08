@@ -282,7 +282,8 @@ function drawChart(feature){
 	$("#summaryBox").show();
 	$('#schoolTitle').html(feature.properties.School)
 	
-	
+	console.log(feature.properties);
+
 	$('#chartArea').highcharts({
         chart: {
             type: 'bar'
@@ -291,7 +292,7 @@ function drawChart(feature){
             text: ""
         },
         xAxis: {
-            categories: ["All Students","Asian","Black/African American","Latino","White","English Learners", "Socioeconomically Disadvantaged","Disability"]
+            categories: ["All Students","Asian","Black/African American","Latino","White","English Learners","Socioeconomically Disadvantaged","Disability"]
         },
         yAxis: {
             title: {
@@ -302,7 +303,7 @@ function drawChart(feature){
         },
         series: [{
             name: feature.properties.School,
-            data: [feature.properties.ALL_API13,feature.properties.AS_API13,feature.properties.AA_API13,feature.properties.HI_API13,feature.properties.WH_API13,feature.properties.LI_API13,feature.properties.SD_API13,feature.properties.DI_API13]
+            data: [feature.properties.ALL_API13,feature.properties.AS_API13,feature.properties.AA_API13,feature.properties.HI_API13,feature.properties.WH_API13,feature.properties.EL_API13,feature.properties.SD_API13,feature.properties.DI_API13]
         }, {
             name: 'District',
             data: [721,824,644,687,896,686,687,552]
